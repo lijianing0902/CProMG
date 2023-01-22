@@ -5,6 +5,8 @@ Deep learning-based molecule generation becomes a new paradigm of de novo molecu
 
 ## Installation
 
+We build the model in the following environment.
+
 | Main Package | Version |
 | ------------ | ------- |
 | Python       | 3.9.15  |
@@ -13,14 +15,14 @@ Deep learning-based molecule generation becomes a new paradigm of de novo molecu
 | CUDA         | 10.2    |
 | RDKit        | 2022.03 |
 
-
-### Install via YAML file
+You can build your environment manually or through a yaml file.
+### YAML file
 
 ```bash
 conda env create -f env_CProMG.yml
 conda activate CProMG
 ```
-### Install Manually
+### Manually
 
 ```bash
 # Create conda environment
@@ -34,6 +36,7 @@ conda install pytorch==1.12.1 cudatoolkit=10.2 -c pytorch
 conda install pyg -c pyg
 
 # Install other toolkit
+
 
 ```
 
