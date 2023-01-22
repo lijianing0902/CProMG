@@ -1,0 +1,169 @@
+model:
+  hidden_channels: 256
+  encoder:
+    name: cftfm
+    hidden_channels: 256
+    edge_channels: 64
+    key_channels: 128
+    num_heads: 4
+    num_interactions: 6
+    cutoff: 10.0
+    knn: 48 # kNN Graph
+    lap_dim: 8
+  decoder:
+    tgt_len: 200
+    hidden_channels: 256
+    key_channels: 128
+    num_heads: 4
+    num_interactions: 6
+    padding: "right"
+    smiVoc: [
+        "#",
+        "$",
+        "&",
+        "(",
+        ")",
+        "-",
+        "/",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "=",
+        "B",
+        "Br",
+        "C",
+        "Cl",
+        "F",
+        "I",
+        "N",
+        "O",
+        "P",
+        "S",
+        "[125I]",
+        "[18F]",
+        "[2H]",
+        "[3H]",
+        "[AlH2]",
+        "[As]",
+        "[Au]",
+        "[B-]",
+        "[C-]",
+        "[C@@H]",
+        "[C@@]",
+        "[C@H]",
+        "[C@]",
+        "[CH-]",
+        "[Cr]",
+        "[Fe--]",
+        "[Fe@@]",
+        "[Fe@]",
+        "[Fe]",
+        "[Hg]",
+        "[K]",
+        "[Li]",
+        "[Mg]",
+        "[Mo]",
+        "[N+]",
+        "[N-]",
+        "[N@+]",
+        "[N@@+]",
+        "[N@@]",
+        "[N@H+]",
+        "[N@]",
+        "[NH+]",
+        "[NH-]",
+        "[NH2+]",
+        "[NH3+]",
+        "[N]",
+        "[Na]",
+        "[O+]",
+        "[O-]",
+        "[OH+]",
+        "[O]",
+        "[P+]",
+        "[P@@]",
+        "[P@]",
+        "[PH]",
+        "[P]",
+        "[Pd]",
+        "[Re]",
+        "[Ru@@]",
+        "[Ru]",
+        "[S+]",
+        "[S-]",
+        "[S@+]",
+        "[S@@+]",
+        "[S@@H]",
+        "[S@@]",
+        "[S@H]",
+        "[S@]",
+        "[SH]",
+        "[Sc]",
+        "[S]",
+        "[Sb]",
+        "[SeH]",
+        "[Se]",
+        "[Si]",
+        "[SnH]",
+        "[Sn]",
+        "[V]",
+        "[Zn++]",
+        "[c-]",
+        "[n+]",
+        "[n-]",
+        "[nH+]",
+        "[nH]",
+        "[o+]",
+        "[s+]",
+        "[se]",
+        "[W]",
+        "\\",
+        "^",
+        "c",
+        "n",
+        "o",
+        "p",
+        "s"
+    ]
+  
+train:
+  seed: 2022
+  batch_size: 4
+  num_workers: 4
+  max_iters: 50
+  val_freq: 1000
+  pos_noise_std: 0.1
+  max_grad_norm: .inf
+  num_props: 3
+  prop: 
+    - vina_score
+    - qed
+    - sas
+  optimizer:
+    type: adam
+    lr: 1.e-4
+    weight_decay: 0
+    beta1: 0.99
+    beta2: 0.999
+  scheduler:
+    type: plateau
+    factor: 0.6
+    patience: 5
+    min_lr: 1.e-5
+
+generate: 
+  prop: 
+    - 1
+    - 1
+    - 1
+
+dataset:
+  name: pl
+  path: /home/lijianing/ljn/ljn-code/data/crossdocked_pocket10
+  split: ./data/split_by_name1000.pt
