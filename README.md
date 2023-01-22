@@ -8,25 +8,55 @@ Deep learning-based molecule generation becomes a new paradigm of de novo molecu
 | Main Package | Version |
 | ------------ | ------- |
 | Python       | 3.9.15  |
-| Pytorch      | 3.9.15  |
+| Pytorch      | 1.12.1  |
 | PyG          | 2.2.0   |
 | CUDA         | 10.2    |
 | RDKit        | 2022.03 |
 
+
+## Install via YAML file
+
+```bash
+conda env create -f env_CProMG.yml
+conda activate CProMG
+```
+## Install Manually
+
+```bash
+# Create conda environment
+conda create -n CProMG python=3.9
+conda activate CProMG
+
+# Install Pytorch (CUDA 10.2)
+conda install pytorch==1.12.1 cudatoolkit=10.2 -c pytorch
+
+# Install PyG (>=2.x)
+conda install pyg -c pyg
+
+# Install other toolkit
+
+```
+
 # Datasets
 
 <!-- 弄一个google drive放数据？ -->
+
 # Training
-```shell
+
+```bash
 python train.py --config  ./configs/CProMG-VQS.yml 
 ```
-> 
-# pretrained model
-我们提供了两个模型，如下：
-<!-- CProMG-VQS：./Pretrained/ CProMG-VQS.pt
-CProMG-VQSLT: ./Pretrained/ CProMG-VQSLT.pt
-运行如下代码为某一蛋白质口袋生成小分子（以CProMG-VQS模型为例）：
+
+# Pretrained model
+
+We provided the following two pre-trained models
+- CProMG-VQS
+- CProMG-VQSLT
+
+Place the pretrained model (e.g. CProMG-VQS) under the `Pretrained` folder and run the following code to generate small molecules for a protein pocket.
+
+```bash
 python gen.py --config ./configs/CProMG-VQS.yml --input ./data/test/1/pocket.pdb --model ./pretrained/CProMG-VQS.pt
---config 模型的配置文件，设置预期的分子属性
---input 蛋白质口袋路径 
---model 与训练模型路径 -->
+```
+
+
