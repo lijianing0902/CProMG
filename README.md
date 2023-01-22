@@ -58,7 +58,7 @@ We provided the following two pre-trained models
 - [CProMG-VQS](https://drive.google.com/file/d/1HlG2rnmcCYfP0gNjNpKAg4hhHiqEPWXn/view?usp=share_link)
 - [CProMG-VQSLT](https://drive.google.com/file/d/1lWDAbYGpYuU2aO2Aa_rqIemmkwLbxNN4/view?usp=share_link)
 
-Place the pretrained model (e.g. CProMG-VQS) under the `/Pretrained` folder and run the following code to generate small molecules for a protein pocket.
+Place the pretrained model (e.g. CProMG-VQS) under the `/pretrained` folder and run the following code to generate small molecules for a protein pocket.
 
 ```bash
 python gen.py --config ./configs/CProMG-VQS.yml --input ./data/test/1/pocket.pdb --model ./pretrained/CProMG-VQS.pt
