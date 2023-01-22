@@ -3,7 +3,7 @@
 Deep learning-based molecule generation becomes a new paradigm of de novo molecule design since it enables fast and directional exploration in the vast chemical space. We elaborate a novel framework for controllable protein-oriented molecule generation. 
 <!-- Here is the overview of the CProMG framework. -->
 
-# Installation
+## Installation
 
 | Main Package | Version |
 | ------------ | ------- |
@@ -14,13 +14,13 @@ Deep learning-based molecule generation becomes a new paradigm of de novo molecu
 | RDKit        | 2022.03 |
 
 
-## Install via YAML file
+### Install via YAML file
 
 ```bash
 conda env create -f env_CProMG.yml
 conda activate CProMG
 ```
-## Install Manually
+### Install Manually
 
 ```bash
 # Create conda environment
@@ -37,17 +37,17 @@ conda install pyg -c pyg
 
 ```
 
-# Datasets
+## Datasets
 
 <!-- 弄一个google drive放数据？ -->
 
-# Training
+## Training
 
 ```bash
 python train.py --config  ./configs/CProMG-VQS.yml 
 ```
 
-# Pretrained model
+## Pretrained model
 
 We provided the following two pre-trained models
 - CProMG-VQS
