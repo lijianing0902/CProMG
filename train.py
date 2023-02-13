@@ -1,14 +1,13 @@
 import os
 import shutil
 import argparse
+
+from termcolor import colored
 from tqdm.auto import tqdm
 import torch
 from torch.nn.utils import clip_grad_norm_
 import torch.utils.tensorboard
 from torch_geometric.loader import DataLoader
-import pandas as pd
-import re
-from termcolor import colored
 
 from models.search import *
 from models.TRM import Transformer
@@ -18,10 +17,6 @@ from utils.misc import *
 from utils.train import *
 from utils.early_stop import *
 
-import faulthandler
-faulthandler.enable()
-
-#python3 train2.py /home/lijianing/ljn/CProMG/configs/main3.yml
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -110,7 +105,7 @@ if __name__ == '__main__':
     ).to(args.device)
 
     # Optimizer and scheduler
-    criterion = torch.nn.CrossEntropyLoss()#交叉熵主要是用来判定实际的输出与期望的输出的接近程度
+    criterion = torch.nn.CrossEntropyLoss()
     optimizer = get_optimizer(config.train.optimizer, model)
     scheduler = get_scheduler(config.train.scheduler, optimizer)
     early_stopping = EarlyStopping('min', 20, delta=0.00005)
@@ -160,18 +155,6 @@ if __name__ == '__main__':
 
         del outputs,batch
 
-        # if it%100==0:
-        #     logger.info('[Train] Iter %d | Loss %.6f ' % (
-        #         it, loss.item()
-        #     ))
-
-        # if config.train.scheduler.type == 'plateau':
-        #     scheduler.step(loss)
-        # elif config.train.scheduler.type == 'warmup_plateau':
-        #     scheduler.step_ReduceLROnPlateau(loss)
-        # else:
-        #     scheduler.step()
-      
         writer.add_scalar('train/loss', loss, it)
         writer.add_scalar('train/lr', optimizer.param_groups[0]['lr'], it)
         writer.add_scalar('train/grad', orig_grad_norm, it)
@@ -181,7 +164,6 @@ if __name__ == '__main__':
         sum_loss, sum_n = 0, 0
         with torch.no_grad():
             model.eval()
-            df = pd.DataFrame(columns=['PROTEINS','SMILES'])
             for batch in tqdm(val_loader, desc='Validate'):
                 batch = batch.to(args.device)
                 dic = {'sas': batch.ligand_sas, 
@@ -216,15 +198,10 @@ if __name__ == '__main__':
                 loss = criterion(outputs, batch.ligand_smiIndices_tgt.contiguous().view(-1))
                 sum_loss += loss.item()
                 sum_n += 1
-                df1 = pd.DataFrame(batch.protein_filename,columns=['PROTEINS'])
-                df2 = pd.DataFrame(batch.ligand_filename,columns=['SMILES'])
-                df3 = pd.concat([df1,df2],join='outer',axis=1)
-                df = pd.concat([df,df3],axis=0,ignore_index=True)
                 del outputs,batch
-            df.to_csv('./valid_list.csv',index=False)
+
         avg_loss = sum_loss / sum_n
         
-
         if config.train.scheduler.type == 'plateau':
             scheduler.step(avg_loss)
         elif config.train.scheduler.type == 'warmup_plateau':
@@ -283,8 +260,8 @@ if __name__ == '__main__':
         writer.add_scalar('val/loss2', avg_loss, it)
         return avg_loss
 
-    # # 加载模型
-    # checkpoint = torch.load('/home/shilab/ljn/new/logs/main_2022_11_30__01_04_31/checkpoints/392000.pt')
+    # load model
+    # checkpoint = torch.load('usr_path/xxx.pt')
     # model.load_state_dict(checkpoint['model'])
     # optimizer.load_state_dict(checkpoint['optimizer'])
     # scheduler.load_state_dict(checkpoint['scheduler'])
@@ -292,7 +269,7 @@ if __name__ == '__main__':
     # it = checkpoint['iteration']
     # model.eval()
 
-    #训练
+    # train
     try:
         for it in range(1, config.train.max_iters+1):
             # with torch.autograd.detect_anomaly():
@@ -323,54 +300,6 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         logger.info('Terminating...')
     
-    #束搜索
-    df = pd.DataFrame(columns=['PROTEINS','SMILES'])
-    for example in test_loader:
-        example = example.to(args.device)
-        
-        smiles = example.ligand_smile
-        filename = example.protein_filename
-        batch_size = 1
-        num_beams = 20  #config.generate.num_beams
-        topk = 10  #config.generate.topk
-        
-        if config.train.num_props:
-            prop = torch.tensor([config.generate.prop for i in range(batch_size*num_beams)],dtype = torch.float).to(args.device)
-            assert prop.shape[-1] == config.train.num_props
-            num = int(bool(config.train.num_props))
-        else:
-            num = 0
-            prop = None
 
-
-        beam_output= beam_search(model, config.model.decoder.smiVoc, num_beams, 
-                                 batch_size, config.model.decoder.tgt_len + num, topk,example, prop)
-        beam_output = beam_output.view(batch_size,topk,-1)
-
-        for i,item in enumerate(beam_output):
-            generate = []
-            for j in item:
-                smile = [config.model.decoder.smiVoc[n.item()] for n in j.squeeze()]
-                smile = re.sub('[&$^]', '',''.join(smile))
-                generate.append(smile)
-            
-            logger.info('\n[protein] : %s \n [ligand]: %s \n [generate]: %s \n' % (
-            filename[i], smiles[i], generate
-            ))
-        
-            df1 = pd.DataFrame([filename[i]]*topk,columns=['PROTEINS'])
-            df2 = pd.DataFrame(generate,columns=['SMILES'])
-            df3 = pd.concat([df1,df2],join='outer',axis=1)
-            df = pd.concat([df,df3],axis=0,ignore_index=True)
-
-    df.to_csv('./result/non_ten_100K_4.csv',index=False) #非条件生成，一个靶点生成十个
-
-    # PandasTools.AddMoleculeColumnToFrame(df,'smile','mol',includeFingerprints=False)
-    # df['QED'] = df['mol'].apply(Descriptors.qed)
-    # df['logP'] = df['mol'].apply(Crippen.MolLogP)
-    # df['TPSA'] = df['mol'].apply(rdMolDescriptors.CalcTPSA)
-    # df['SAS'] = df['mol'].apply(sascorer.calculateScore)
-
-    # df.to_csv('non_ten_subset1.csv')
         
 

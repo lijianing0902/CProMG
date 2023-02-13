@@ -1,13 +1,13 @@
 import os
+from math import pi as PI
+
+import numpy as np
 import torch
 import torch.nn.functional as F
-import numpy as np
 from torch.nn import Module, Sequential, ModuleList, Linear, Conv1d, LayerNorm, ReLU, BatchNorm1d, Softmax
 from torch_geometric.nn import radius_graph, knn_graph
 from torch_geometric.utils import get_laplacian,to_dense_batch,to_undirected
 from torch_scatter import scatter_sum, scatter_softmax
-from math import pi as PI
-
 
 from .common import GaussianSmearing, ShiftedSoftplus
 

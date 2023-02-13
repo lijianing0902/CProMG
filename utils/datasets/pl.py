@@ -1,17 +1,16 @@
 import os
 import pickle
+
 import lmdb
 import torch
-from torch.utils.data import Dataset
-from tqdm.auto import tqdm
-import sys
-import traceback
 import pandas as pd
+from tqdm.auto import tqdm
+from torch.utils.data import Dataset
 from torch_geometric.transforms.add_positional_encoding import AddLaplacianEigenvectorPE
 from torch_geometric.nn import radius_graph, knn_graph
-from models.common import GaussianSmearing, ShiftedSoftplus,Gaussian
 from torch_geometric.utils import to_undirected
 
+from models.common import GaussianSmearing, ShiftedSoftplus, Gaussian
 from ..protein_ligand import PDBProtein, parse_sdf_file
 from ..data import ProteinLigandData, torchify_dict
 
@@ -81,10 +80,9 @@ class PocketLigandPairDataset(Dataset):
             index.reverse()
 
         num_skipped = 0
-        df = pd.read_csv('/home/lijianing/ljn/CProMG/data/dock_scores.csv')
+        df = pd.read_csv('/data/dock_scores.csv')
         with db.begin(write=True, buffers=True) as txn:
             for i, (pocket_fn, ligand_fn, _, rmsd_str) in enumerate(tqdm(index)):
-                # if i>2000:break
                 if pocket_fn is None: continue
                
                 try:
@@ -124,7 +122,7 @@ class PocketLigandPairDataset(Dataset):
                     )
                 except :
                     continue
-            # print(b)
+
         db.close()
 
     def _precompute_name2id(self):

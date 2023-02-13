@@ -66,7 +66,7 @@ def beam_search(model,smiVoc,num_beams,batch_size,max_length,topk,example, prop=
     
     input_ids =  torch.full((batch_size * num_beams, 1), sos_token_id, dtype=torch.long).to(device)
 
-    enc_outputs1, enc_pad_mask1, msa_outputs = model.encoder(node_attr, pos, batch, atom_laplacian)     ##细粒度
+    enc_outputs1, enc_pad_mask1, msa_outputs = model.encoder(node_attr, pos, batch, atom_laplacian)
     enc_outputs2, enc_pad_mask2 = model.encoder2(aa_node_attr, aa_pos, aa_batch, aa_laplacian, enc_pad_mask1, msa_outputs)  
     enc_outputs = torch.cat([enc_outputs1,enc_outputs2],dim=1)
     pad_attn_mask = torch.cat([enc_pad_mask1,enc_pad_mask2],dim=2)

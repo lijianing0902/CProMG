@@ -1,6 +1,7 @@
 # CProMG: Controllable Protein-Oriented Molecule Generation with Desired Binding Affinity and Drug-Like Properties
 
-Deep learning-based molecule generation becomes a new paradigm of de novo molecule design since it enables fast and directional exploration in the vast chemical space. We elaborate a novel framework for controllable protein-oriented molecule generation. 
+Deep learning-based molecule generation becomes a new paradigm of de novo molecule design since it enables fast and directional exploration in the vast chemical space. We elaborate a novel framework for controllable protein-oriented molecule generation.
+
 <!-- Here is the overview of the CProMG framework. -->
 
 ## Installation
@@ -16,12 +17,14 @@ We build the model in the following environment.
 | RDKit        | 2022.03 |
 
 You can build your environment manually or through a yaml file.
+
 ### YAML file
 
 ```bash
 conda env create -f env_CProMG.yml
 conda activate CProMG
 ```
+
 ### Manually
 
 ```bash
@@ -35,26 +38,29 @@ conda install pytorch==1.12.1 cudatoolkit=10.2 -c pytorch
 # Install PyG (>=2.x)
 conda install pyg -c pyg
 
-# Install other toolkit
-
+# Install other toolkit, like lmdb,openbabel,rdkit...
+conda/pip install ...
 
 ```
 
 ## Datasets
 
-<!-- 弄一个google drive放数据？ -->
+Download datasets [here](https://drive.google.com/file/d/1bNOg5Jjf9sdF0vYO1MwRSYGRhn8jrMV1/view?usp=share_link)
 
 ## Training
 
 Use this command to train the model.
+
 ```bash
 python train.py --config  ./configs/CProMG-VQS.yml 
 ```
+
 You can also modify the configuration file to train the model with different parameters.
 
 ## Pretrained model
 
 We provided the following two pre-trained models
+
 - [CProMG-VQS](https://drive.google.com/file/d/1HlG2rnmcCYfP0gNjNpKAg4hhHiqEPWXn/view?usp=share_link)
 - [CProMG-VQSLT](https://drive.google.com/file/d/1lWDAbYGpYuU2aO2Aa_rqIemmkwLbxNN4/view?usp=share_link)
 
@@ -63,5 +69,3 @@ Place the pretrained model (e.g. CProMG-VQS) under the `/pretrained` folder and 
 ```bash
 python gen.py --config ./configs/CProMG-VQS.yml --input ./data/test/1/pocket.pdb --model ./pretrained/CProMG-VQS.pt
 ```
-
-

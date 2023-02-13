@@ -210,7 +210,7 @@ def parse_pdbbind_index_file(path):
 
 def splitSmi(smi):
     '''
-    description: 将smiles拆解为最小单元
+    description: Split SMILES into the smallest unit
     param {*} smi
     return {*}
     '''
