@@ -1,5 +1,5 @@
 # CProMG: Controllable Protein-Oriented Molecule Generation with Desired Binding Affinity and Drug-Like Properties
-
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7737709.svg)](https://doi.org/10.5281/zenodo.7737709)
 Deep learning-based molecule generation becomes a new paradigm of de novo molecule design since it enables fast and directional exploration in the vast chemical space. We elaborate a novel framework for controllable protein-oriented molecule generation.
 
 <!-- Here is the overview of the CProMG framework. -->
