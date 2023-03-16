@@ -45,8 +45,8 @@ conda/pip install ...
 
 ## Datasets
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7737709.svg)](https://doi.org/10.5281/zenodo.7737709)
-Download datasets in Zenodo
+Download datasets in Zenodo[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7737709.svg)](https://doi.org/10.5281/zenodo.7737709)
+
 ## Training
 
 Use this command to train the model.
