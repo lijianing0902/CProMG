@@ -59,10 +59,10 @@ You can also modify the configuration file to train the model with different par
 
 ## Pretrained model
 
-We provided the following two pre-trained models
+We provided the following two pre-trained models in [Zenodo](https://doi.org/10.5281/zenodo.7737709)
 
-- [CProMG-VQS](https://drive.google.com/file/d/1HlG2rnmcCYfP0gNjNpKAg4hhHiqEPWXn/view?usp=share_link)
-- [CProMG-VQSLT](https://drive.google.com/file/d/1lWDAbYGpYuU2aO2Aa_rqIemmkwLbxNN4/view?usp=share_link)
+- CProMG-VQS
+- CProMG-VQSLT
 
 Place the pretrained model (e.g. CProMG-VQS) under the `/pretrained` folder and run the following code to generate small molecules for a protein pocket.
 
