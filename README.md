@@ -45,7 +45,7 @@ conda/pip install ...
 
 ## Datasets
 
-https://doi.org/10.5281/zenodo.7737709)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7737709.svg)](https://doi.org/10.5281/zenodo.7737709)
 Download datasets in Zenodo
 ## Training
 
