@@ -1,10 +1,10 @@
 # CProMG: Controllable Protein-Oriented Molecule Generation with Desired Binding Affinity and Drug-Like Properties
 
-Deep learning-based molecule generation becomes a new paradigm of de novo molecule design since it enables fast and directional exploration in the vast chemical space. We elaborate a novel framework for controllable protein-oriented molecule generation.
+Deep learning-based molecule generation becomes a new paradigm of de novo molecule design since it enables fast and directional exploration in the vast chemical space. We elaborate a novel framework for controllable protein-oriented molecule generation. (mindspore)
 
 <!-- Here is the overview of the CProMG framework. -->
 
-## Installation
+<!-- ## Installation
 
 We build the model in the following environment.
 
@@ -68,4 +68,4 @@ Place the pretrained model (e.g. CProMG-VQS) under the `/pretrained` folder and 
 
 ```bash
 python gen.py --config ./configs/CProMG-VQS.yml --input ./data/test/1/pocket.pdb --model ./pretrained/CProMG-VQS.pt
-```
+``` -->
